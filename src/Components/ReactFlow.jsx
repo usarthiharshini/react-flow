@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import axios from "axios";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -7,7 +6,9 @@ import ReactFlow, {
   useEdgesState,
   Controls,
   Background,
+  getIncomers,
 } from "reactflow";
+
 import "reactflow/dist/style.css";
 
 import Sidebar from "./Sidebar";
@@ -17,29 +18,74 @@ import "./index.css";
 const nodeTypes = {
   custom: CustomNode,
 };
+
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const ReactFlowComponent = ({ ...workflow }) => {
-  const initNodes = [
+  const [name, setName] = useState("");
+
+  console.log(name, "name");
+
+  var initNodes = [
     {
       id: "1",
       type: "input",
-      data: { label: `${workflow.name}` },
+      data: { label: `${name}` },
       position: { x: 250, y: 5 },
-    },
+    style: {
+      border: "1px solid blue",
+    }}
   ];
 
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const [modules, setModules] = useState([]);
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect = useCallback((params) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === params.target) {
+          node = {
+            ...node,
+            style: {
+              border: `1px solid blue`,
+              borderRadius: "3px",
+            },
+          };
+        }
+        return node;
+      })
+    );
+
+    setEdges((eds) => addEdge(params, eds));
+  }, []);
+
+  const onEdgesDelete = useCallback((params) => {
+
+
+    setNodes((nds) =>
+      nds.map((node) => {
+        
+        if (node.id === params[0].target) {
+          
+          node = {
+            ...node,
+            style: {
+              border: `1px solid red`,
+              borderRadius: "3px",
+            },
+          };
+        }
+        return node;
+      })
+    );
+
+  //  setEdges((eds) => addEdge(params, eds));
+  }, []);
+
+  console.log(nodes, "nodes");
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -70,9 +116,13 @@ const ReactFlowComponent = ({ ...workflow }) => {
         type: "custom",
         position,
         data: {
-          label: `${data.label}`,
+          name: `${data.name}`,
           input_type: `${data.input_type}`,
           output_type: `${data.output_type}`,
+        },
+        style: {
+          border: "1px solid red",
+          borderRadius: "3px"
         },
       };
 
@@ -81,26 +131,21 @@ const ReactFlowComponent = ({ ...workflow }) => {
     [reactFlowInstance]
   );
 
-  const getModules = async () => {
-    const data = await axios.get(
-      `https://64307b10d4518cfb0e50e555.mockapi.io/modules?page=1&limit=5`
-    );
-    setModules(data.data);
-  };
-  console.log(modules, "mod");
-
+  
   useEffect(() => {
-    getModules();
-  }, []);
+    setName(workflow.name);
+  }, [nodes]);
 
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <Sidebar modules={modules} />
+        <Sidebar />
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
+           
             edges={edges}
+            deleteKeyCode={["Backspace", "Delete"]}
             nodeTypes={nodeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
@@ -108,7 +153,10 @@ const ReactFlowComponent = ({ ...workflow }) => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onEdgesDelete={onEdgesDelete}
+           
             fitView
+            defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
           >
             <Background />
             <Controls />

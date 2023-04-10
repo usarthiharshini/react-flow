@@ -12,6 +12,7 @@ const IndividualWorkflow = () => {
   };
  
   const [workflow, setWorkflow] = useState(initWorkflow);
+
   const getWorkflow = async () => {
     const data = await axios.get(
       `https://64307b10d4518cfb0e50e555.mockapi.io/workflow/${workflowId}`
@@ -20,6 +21,8 @@ const IndividualWorkflow = () => {
   };
   
   console.log(workflow);
+
+
 
   useEffect(() => {
     getWorkflow();
@@ -34,7 +37,7 @@ const IndividualWorkflow = () => {
         </div>
       </section>
       <section className=" section">
-        <ReactFlowComponent {...workflow} />
+   <ReactFlowComponent {...workflow} /> 
       </section>
     </main>
   );

@@ -1,18 +1,19 @@
-import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { memo } from "react";
+import { Handle, Position } from "reactflow";
 
 const CustomNode = ({ data }) => {
   return (
-    <>
-     
-      <div style={{ padding: '10px 20px',border:'1px solid black',borderRadius:'3px' }}>
-        <span style={{backgroundColor:'yellow'}} >{data.input_type} </span>
-        {data.label}
-        <span> {data.output_type}</span>
+    <div className="node">
+      <span className="input"> {data.input_type} </span>
+      <div
+        style={{ backgroundColor: "hsl(212, 33%, 89%)", padding: "0 0.3rem" }}
+      >
+        {data.name}
       </div>
+      <span className="input"> {data.output_type} </span>
       <Handle type="target" position={Position.Top} />
       <Handle type="source" position={Position.Bottom} />
-    </>
+    </div>
   );
 };
 

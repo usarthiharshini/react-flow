@@ -147,7 +147,7 @@ p {
 
 .title {
   margin-bottom: 2rem;
-  padding: 3rem 0 ;
+  padding: 1rem 0 ;
 }
 .underline {
   width: 100%;
@@ -189,7 +189,7 @@ p {
   margin: auto;
 }
 .reactflow-wrapper{
-height: 100vh!important;
+height: 80vh!important;
 margin: 0;
 /* width: 100vw; */}
 
@@ -202,11 +202,19 @@ margin: 0;
 }
 
  #aside {
-/*   border-right: 1px solid #eee;
- */  /* padding: 15px 20px; */
-  font-size: 18px;
+
+  font-size: 16px;
+ 
+ 
   width: 25%;
-  
+ 
+}
+.partition{
+  height: 80%;
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .dndflow aside .description {
@@ -214,7 +222,7 @@ margin: 0;
 }
 
 .dndflow .dndnode {
-  height: 50px!important;
+  height: fit-content!important;
   padding: 4px;
   border: 1px solid #1a192b;
   border-radius: 2px;
@@ -224,6 +232,8 @@ margin: 0;
   align-items: center;
   cursor: grab;
 }
+
+
 
 .dndflow .dndnode.input {
   border-color: #0041d0;
@@ -242,10 +252,44 @@ margin: 0;
   margin-top: 10px;
 }
 
-.modules{
+
+
+/* .modules div{
+  width: 80%;
+  align-self: center;
+} */
+.loading{
+  
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btngrp{
+  display: flex;
+ 
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 1rem;
+}
+.btngrp button{
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--clr-gold);
+  
+  border-radius: 0.3rem;
+}
+
+.node{
+  display: flex;
+}
+.input{
+  padding: 0 0.5rem;
+  text-transform: capitalize;
   
 }
+
 
 @media screen and (min-width: 768px) {
   .dndflow {
