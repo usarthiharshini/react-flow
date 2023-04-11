@@ -6,11 +6,11 @@ import ReactFlowComponent from "../Components/ReactFlow";
 
 const IndividualWorkflow = () => {
   const { workflowId } = useParams();
-   const initWorkflow = {
+  const initWorkflow = {
     name: "",
     id: "",
   };
- 
+
   const [workflow, setWorkflow] = useState(initWorkflow);
 
   const getWorkflow = async () => {
@@ -19,10 +19,8 @@ const IndividualWorkflow = () => {
     );
     setWorkflow(data.data);
   };
-  
+
   console.log(workflow);
-
-
 
   useEffect(() => {
     getWorkflow();
@@ -37,7 +35,7 @@ const IndividualWorkflow = () => {
         </div>
       </section>
       <section className=" section">
-   <ReactFlowComponent {...workflow} /> 
+        <ReactFlowComponent {...workflow} />
       </section>
     </main>
   );

@@ -32,12 +32,16 @@ const Home = () => {
             <th>Input Type</th>
             <th>Created at</th>
           </tr>
-          {workflows.map((workflow) =>{
-            return <tr>
-                <td><a href={`/${workflow.id}`}>{workflow.name}</a></td>
+          {workflows.map((workflow) => {
+            return (
+              <tr>
+                <td>
+                  <a href={`/${workflow.id}`}>{workflow.name}</a>
+                </td>
                 <td className="input-type">{workflow.input_type}</td>
                 <td>{workflow.createdAt}</td>
-            </tr>
+              </tr>
+            );
           })}
         </table>
       </section>

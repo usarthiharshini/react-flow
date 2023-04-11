@@ -6,7 +6,7 @@ import ReactFlow, {
   useEdgesState,
   Controls,
   Background,
-  getIncomers,
+  Viewport,
 } from "reactflow";
 
 import "reactflow/dist/style.css";
@@ -31,11 +31,12 @@ const ReactFlowComponent = ({ ...workflow }) => {
     {
       id: "1",
       type: "input",
-      data: { name},
+      data: { label: "Input Node" },
       position: { x: 250, y: 5 },
-    style: {
-      border: "1px solid blue",
-    }}
+      style: {
+        border: "1px solid blue",
+      },
+    },
   ];
 
   const reactFlowWrapper = useRef(null);
@@ -46,14 +47,6 @@ const ReactFlowComponent = ({ ...workflow }) => {
   const onConnect = useCallback((params) => {
     setNodes((nds) =>
       nds.map((node) => {
-
-        if (node.id == 1) {
-          node.data = {
-            ...node.data,
-               label:  workflow.name
-          };
-        }
-
         if (node.id === params.target) {
           node = {
             ...node,
@@ -70,38 +63,10 @@ const ReactFlowComponent = ({ ...workflow }) => {
     setEdges((eds) => addEdge(params, eds));
   }, []);
 
-
-  /* const onInit = useCallback((instance: ReactFlowInstance) => {
-    setReactFlowInstance(instance);
-console.log("loaded");
-
-    setNodes( (nds) =>
-      nds.map((node) => {
-
-        if (node.id == 1) {
-          node.data = {
-            ...node.data,
-               label: `${workflow.name}`
-          };
-        }
-
-      
-        return node;
-      } )
-      
-    )
-    
-  }, [workflow]);  */
-
-
   const onEdgesDelete = useCallback((params) => {
-
-
     setNodes((nds) =>
       nds.map((node) => {
-        
         if (node.id === params[0].target) {
-          
           node = {
             ...node,
             style: {
@@ -114,7 +79,7 @@ console.log("loaded");
       })
     );
 
-   setEdges((eds) => addEdge(params, eds));
+    setEdges((eds) => addEdge(params, eds));
   }, []);
 
   console.log(nodes, "nodes");
@@ -131,7 +96,6 @@ console.log("loaded");
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const typed = event.dataTransfer.getData("application/reactflow");
 
-      // check if the dropped element is valid
       if (typeof typed === "undefined" || !typed) {
         return;
       }
@@ -154,7 +118,7 @@ console.log("loaded");
         },
         style: {
           border: "1px solid red",
-          borderRadius: "3px"
+          borderRadius: "3px",
         },
       };
 
@@ -163,10 +127,9 @@ console.log("loaded");
     [reactFlowInstance]
   );
 
-  
   useEffect(() => {
     setName(workflow.name);
-  }, [nodes]);
+  }, []);
 
   return (
     <div className="dndflow">
@@ -175,7 +138,6 @@ console.log("loaded");
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
-          
             edges={edges}
             deleteKeyCode={["Backspace", "Delete"]}
             nodeTypes={nodeTypes}
@@ -186,9 +148,7 @@ console.log("loaded");
             onDrop={onDrop}
             onDragOver={onDragOver}
             onEdgesDelete={onEdgesDelete}
-         
             fitView
-            defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
           >
             <Background />
             <Controls />
