@@ -31,7 +31,7 @@ const ReactFlowComponent = ({ ...workflow }) => {
     {
       id: "1",
       type: "input",
-      data: { label: `${name}` },
+      data: { name},
       position: { x: 250, y: 5 },
     style: {
       border: "1px solid blue",
@@ -46,6 +46,14 @@ const ReactFlowComponent = ({ ...workflow }) => {
   const onConnect = useCallback((params) => {
     setNodes((nds) =>
       nds.map((node) => {
+
+        if (node.id == 1) {
+          node.data = {
+            ...node.data,
+               label:  workflow.name
+          };
+        }
+
         if (node.id === params.target) {
           node = {
             ...node,
@@ -61,6 +69,30 @@ const ReactFlowComponent = ({ ...workflow }) => {
 
     setEdges((eds) => addEdge(params, eds));
   }, []);
+
+
+  /* const onInit = useCallback((instance: ReactFlowInstance) => {
+    setReactFlowInstance(instance);
+console.log("loaded");
+
+    setNodes( (nds) =>
+      nds.map((node) => {
+
+        if (node.id == 1) {
+          node.data = {
+            ...node.data,
+               label: `${workflow.name}`
+          };
+        }
+
+      
+        return node;
+      } )
+      
+    )
+    
+  }, [workflow]);  */
+
 
   const onEdgesDelete = useCallback((params) => {
 
@@ -82,7 +114,7 @@ const ReactFlowComponent = ({ ...workflow }) => {
       })
     );
 
-  //  setEdges((eds) => addEdge(params, eds));
+   setEdges((eds) => addEdge(params, eds));
   }, []);
 
   console.log(nodes, "nodes");
@@ -143,7 +175,7 @@ const ReactFlowComponent = ({ ...workflow }) => {
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
-           
+          
             edges={edges}
             deleteKeyCode={["Backspace", "Delete"]}
             nodeTypes={nodeTypes}
@@ -154,7 +186,7 @@ const ReactFlowComponent = ({ ...workflow }) => {
             onDrop={onDrop}
             onDragOver={onDragOver}
             onEdgesDelete={onEdgesDelete}
-           
+         
             fitView
             defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
           >
