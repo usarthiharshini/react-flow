@@ -30,7 +30,7 @@ const Home = () => {
           <tr>
             <th>Name</th>
             <th>Input Type</th>
-            <th>Created at</th>
+            <th>Created At</th>
           </tr>
           {workflows.map((workflow) =>{
             return <tr>
